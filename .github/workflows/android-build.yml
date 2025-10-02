@@ -1,21 +1,14 @@
-name: Build Android APK
+name: Generate Gradle Wrapper
 
 on:
-  push:
-    branches: [ "main" ]
-  workflow_dispatch:
+  workflow_dispatch: # This allows us to run it manually
 
 jobs:
-  build:
+  generate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -23,17 +16,15 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Install npm dependencies
-        run: npm install
+      - name: Initialize Gradle Wrapper
+        run: gradle wrapper --gradle-version 8.6
 
-      - name: Make gradlew executable
-        run: chmod +x android/gradlew
-
-      - name: Build Android Release APK
-        run: cd android && ./gradlew assembleRelease --no-daemon
-
-      - name: Upload APK as Artifact
+      - name: Upload Gradle Wrapper files
         uses: actions/upload-artifact@v4
         with:
-          name: app-release
-          path: android/app/build/outputs/apk/release/app-release.apk
+          name: gradle-wrapper
+          path: |
+            gradlew
+            gradlew.bat
+            gradle/wrapper/gradle-wrapper.jar
+            gradle/wrapper/gradle-wrapper.properties
