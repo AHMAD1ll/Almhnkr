@@ -1,7 +1,7 @@
 name: Generate Gradle Wrapper
 
 on:
-  workflow_dispatch: # This allows us to run it manually
+  workflow_dispatch:
 
 jobs:
   generate:
@@ -26,5 +26,4 @@ jobs:
           path: |
             gradlew
             gradlew.bat
-            gradle/wrapper/gradle-wrapper.jar
-            gradle/wrapper/gradle-wrapper.properties
+            gradle/
