@@ -17,12 +17,15 @@ jobs:
           java-version: '17'
 
       - name: Initialize Gradle Wrapper
-        run: gradle wrapper --gradle-version 8.6
+        run: |
+          # This command uses the 'gradle' binary provided by the setup-java action
+          # to create the wrapper files for a specific version.
+          gradle wrapper --gradle-version 8.6
 
       - name: Upload Gradle Wrapper files
         uses: actions/upload-artifact@v4
         with:
-          name: gradle-wrapper
+          name: gradle-wrapper-files
           path: |
             gradlew
             gradlew.bat
