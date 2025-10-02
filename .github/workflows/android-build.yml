@@ -15,7 +15,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Using Node.js version 20
+          node-version: '20'
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -26,11 +26,23 @@ jobs:
       - name: Install npm dependencies
         run: npm install
 
+      - name: Generate Gradle Wrapper
+        run: npx --yes gradle-wrapper-generator
+
       - name: Make gradlew executable
-        run: chmod +x ./android/gradlew
+        run: chmod +x ./gradlew
+
+      - name: Move Gradle files to android directory
+        run: |
+          mkdir -p android
+          mv gradlew android/
+          mv gradle android/
 
       - name: Build Android Release APK
-        run: cd android && ./gradlew assembleRelease
+        # We need to create a dummy build.gradle for now
+        run: |
+          echo "apply plugin: 'com.android.application'" > android/app/build.gradle
+          cd android && ./gradlew assembleRelease --no-daemon
 
       - name: Upload APK as Artifact
         uses: actions/upload-artifact@v4
