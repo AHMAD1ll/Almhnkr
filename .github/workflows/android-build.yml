@@ -16,6 +16,9 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Create dummy settings.gradle
+        run: echo "rootProject.name = 'temp-project'" > settings.gradle
+
       - name: Initialize Gradle Wrapper
         run: gradle wrapper --gradle-version 8.6
 
